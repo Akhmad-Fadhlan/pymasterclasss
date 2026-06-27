@@ -13,6 +13,7 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({ onStartLearningClick, onLoginClick }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeLink, setActiveLink] = useState("Beranda");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,16 +55,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onStartLearningClick, onLoginCli
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-sm font-medium text-[#0F172A]/70 hover:text-primary transition-colors"
-              >
-                {link.name}
-              </a>
-            ))}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive = activeLink === link.name;
+              return (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setActiveLink(link.name)}
+                  className={`text-xs font-bold px-3.5 py-2 rounded-xl transition-all duration-200 ${
+                    isActive
+                      ? "bg-primary text-white shadow-md shadow-primary/20"
+                      : "text-[#0F172A]/70 hover:text-primary hover:bg-primary/5"
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })}
           </div>
 
           {/* Desktop CTAs */}
@@ -93,21 +102,31 @@ export const Navbar: React.FC<NavbarProps> = ({ onStartLearningClick, onLoginCli
         </div>
       </div>
 
-      {/* Mobile Dropdown Menu */}
+      {/* Mobile Dropdown Menu (Opaque white bg to prevent overlaps) */}
       {isOpen && (
-        <div className="md:hidden glass border-b border-slate-200/50 absolute top-full left-0 right-0 py-4 px-6 flex flex-col gap-4 animate-in slide-in-from-top-5 duration-200">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="text-sm font-semibold text-[#0F172A]/80 hover:text-primary py-2 transition-colors"
-            >
-              {link.name}
-            </a>
-          ))}
-          <hr className="border-slate-200" />
-          <div className="flex flex-col gap-2 pt-2">
+        <div className="md:hidden bg-white shadow-2xl border-b border-slate-200/80 absolute top-full left-0 right-0 py-5 px-6 flex flex-col gap-3 animate-in slide-in-from-top-5 duration-200">
+          {navLinks.map((link) => {
+            const isActive = activeLink === link.name;
+            return (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => {
+                  setActiveLink(link.name);
+                  setIsOpen(false);
+                }}
+                className={`text-sm font-bold px-4 py-2.5 rounded-xl text-left transition-all duration-200 ${
+                  isActive
+                    ? "bg-primary text-white shadow-sm"
+                    : "text-[#0F172A]/80 hover:text-primary hover:bg-primary/5"
+                }`}
+              >
+                {link.name}
+              </a>
+            );
+          })}
+          <hr className="border-slate-100 my-2" />
+          <div className="flex flex-col gap-2">
             <Link href="/login" onClick={() => setIsOpen(false)}>
               <Button variant="outline" size="md" fullWidth>
                 Login
