@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef } from "react";
-import { Check, ArrowRight, Play, Sparkles, Code, BookOpen, Clock, BrainCircuit } from "lucide-react";
+import { Check, ArrowRight, Play, Sparkles, Code, BookOpen, Clock, BrainCircuit, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { Badge } from "@/components/ui/Badge";
@@ -52,8 +52,8 @@ export const HeroSection: React.FC = () => {
     >
       {/* Decorative background grid and blurs */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-35" />
-      <div className="absolute top-20 right-[-10%] w-[500px] h-[500px] bg-primary/10 rounded-full blur-[100px] -z-10" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-secondary/10 rounded-full blur-[120px] -z-10" />
+      <div className="absolute top-20 right-[-10%] w-[500px] h-[500px] bg-primary/15 rounded-full blur-[100px] -z-10 animate-float-1" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-secondary/15 rounded-full blur-[120px] -z-10 animate-float-2" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
@@ -145,8 +145,45 @@ export const HeroSection: React.FC = () => {
           </div>
 
           {/* Right Column: Premium Dashboard Mockup Card */}
-          <div ref={rightMockupRef} className="lg:col-span-5 w-full flex justify-center">
-            <div className="relative w-full max-w-[420px] aspect-[4/5] glass-dark rounded-3xl p-6 shadow-2xl flex flex-col border border-white/60">
+          <div ref={rightMockupRef} className="lg:col-span-5 w-full flex justify-center relative">
+            
+            {/* Orbiting Icons */}
+            {/* Icon 1: Python Logo */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass flex items-center justify-center border border-white/80 shadow-lg animate-orbit-1 z-20">
+              <svg className="w-8 h-8" viewBox="0 0 100 100" fill="none">
+                <path d="M49.5 5A44.5 44.5 0 005 49.5a4.5 4.5 0 004.5 4.5h10.9v-4.5a20 20 0 0120-20H45v-9.1c0-4.5 4.5-9.1 9.1-9.1h18.2a4.5 4.5 0 004.5-4.5 4.5 4.5 0 00-4.5-4.5H49.5z" fill="#2563EB" />
+                <circle cx="34" cy="20" r="3" fill="white" />
+                <path d="M50.5 95A44.5 44.5 0 0095 50.5a4.5 4.5 0 00-4.5-4.5H79.6v4.5a20 20 0 01-20 20H55v9.1c0 4.5-4.5 9.1-9.1 9.1H27.7a4.5 4.5 0 00-4.5 4.5 4.5 4.5 0 004.5 4.5H50.5z" fill="#F59E0B" />
+                <circle cx="66" cy="80" r="3" fill="white" />
+              </svg>
+            </div>
+            
+            {/* Icon 2: Bar Progress */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass flex items-center justify-center border border-white/80 shadow-lg animate-orbit-2 z-20">
+              <svg className="w-6 h-6 text-[#10B981]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeOpacity="0.2" />
+                <path d="M12 2a10 10 0 0 1 10 10" />
+              </svg>
+            </div>
+
+            {/* Icon 3: Arduino Logo */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass flex items-center justify-center border border-white/80 shadow-lg animate-orbit-3 z-20">
+              <svg className="w-8 h-8 text-[#06B6D4]" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 8.5C6.1 8.5 4.5 10.1 4.5 12c0 1.9 1.6 3.5 3.5 3.5 1.5 0 2.8-1 3.3-2.3.2-.5.7-.7 1.2-.7s1 .2 1.2.7c.5 1.3 1.8 2.3 3.3 2.3 1.9 0 3.5-1.6 3.5-3.5 0-1.9-1.6-3.5-3.5-3.5-1.5 0-2.8 1-3.3 2.3-.2.5-.7.7-1.2.7s-1-.2-1.2-.7C10.8 9.5 9.5 8.5 8 8.5zm8 2.5h2v2h-2v-2zM6 11h4v2H6v-2z" />
+              </svg>
+            </div>
+
+            {/* Icon 4: Website Browser */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full glass flex items-center justify-center border border-white/80 shadow-lg animate-orbit-4 z-20">
+              <svg className="w-6 h-6 text-[#9333EA]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="M2 8h20" />
+                <path d="M6 6h.01" />
+                <path d="M10 6h.01" />
+              </svg>
+            </div>
+
+            <div className="relative w-full max-w-[420px] aspect-[4/5] glass-card rounded-3xl p-6 shadow-2xl flex flex-col">
               
               {/* Header inside mockup */}
               <div className="flex items-center justify-between mb-6 pb-4 border-b border-slate-200/40">

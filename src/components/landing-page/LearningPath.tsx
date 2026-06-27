@@ -96,16 +96,19 @@ export const LearningPath: React.FC = () => {
         </div>
 
         {/* Tablet & Mobile Layout: Vertical Stepper */}
-        <div className="lg:hidden relative pl-8 border-l-2 border-slate-200 flex flex-col gap-8 text-left py-4">
+        <div className="lg:hidden relative flex flex-col gap-8 text-left py-4">
+          {/* Vertical Connector line exactly centered behind the circles */}
+          <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-slate-200 z-0" />
+          
           {steps.map((step, idx) => (
-            <div key={idx} className="relative flex items-center gap-4">
-              {/* Vertical Connector dot */}
+            <div key={idx} className="relative flex items-center pl-12 z-10">
+              {/* Stepper Node (Circle) */}
               <div
-                className={`absolute -left-[45px] w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs ${
+                className={`absolute left-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs z-10 transition-all duration-300 ${
                   step.status === "completed"
-                    ? "bg-[#10B981] border-[#E8F8F3] text-white"
+                    ? "bg-[#10B981] border-[#E8F8F3] text-white shadow-md shadow-[#10B981]/10"
                     : step.status === "active"
-                    ? "bg-primary border-blue-50 text-white scale-110"
+                    ? "bg-primary border-blue-50 text-white scale-110 shadow-md shadow-primary/10"
                     : "bg-white border-slate-100 text-slate-400"
                 }`}
               >

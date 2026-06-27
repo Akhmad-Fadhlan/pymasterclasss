@@ -18,7 +18,7 @@ export const Card: React.FC<CardProps> = ({
       className={cn(
         "rounded-2xl overflow-hidden p-6 transition-all duration-300",
         {
-          "glass": variant === "glass",
+          "glass-card": variant === "glass",
           "glass-dark": variant === "glass-dark",
           "bg-white shadow-sm border border-slate-100": variant === "flat",
           "border border-slate-200 bg-transparent": variant === "outline",

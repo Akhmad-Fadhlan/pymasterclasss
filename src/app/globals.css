@@ -26,34 +26,94 @@ body {
   font-family: var(--font-sans);
 }
 
-/* Glassmorphism utilities */
+/* Premium Glassmorphism utilities */
 .glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.04);
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8),
+    0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .glass-dark {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 40px 0 rgba(37, 99, 235, 0.06);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 
+    0 12px 40px 0 rgba(37, 99, 235, 0.08),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9);
+}
+
+.glass-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 10px 30px -10px rgba(0, 0, 0, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.05), rgba(37, 99, 235, 0.2));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  z-index: 10;
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(37, 99, 235, 0.15);
-  transition: all 0.2s ease-in-out;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.85);
   border-color: #2563EB;
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  box-shadow: 
+    0 0 0 3px rgba(37, 99, 235, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.8);
+}
+
+/* Animations for colorful blobs */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(20px, -20px) scale(1.05);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-30px, 15px) scale(0.95);
+  }
+}
+
+.animate-float-1 {
+  animation: float-slow 10s infinite ease-in-out;
+}
+
+.animate-float-2 {
+  animation: float-medium 12s infinite ease-in-out;
 }
 
 /* Scrollbar styling */
@@ -74,4 +134,75 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #94A3B8;
 }
+
+/* Orbit animations with responsive radius variables */
+:root {
+  --orbit-radius: 340px;
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --orbit-radius: 270px;
+  }
+}
+
+@media (max-width: 640px) {
+  :root {
+    --orbit-radius: 200px;
+  }
+}
+
+@keyframes orbit-1 {
+  from {
+    transform: rotate(0deg) translateX(var(--orbit-radius)) rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg) translateX(var(--orbit-radius)) rotate(-360deg);
+  }
+}
+
+@keyframes orbit-2 {
+  from {
+    transform: rotate(90deg) translateX(var(--orbit-radius)) rotate(-90deg);
+  }
+  to {
+    transform: rotate(450deg) translateX(var(--orbit-radius)) rotate(-450deg);
+  }
+}
+
+@keyframes orbit-3 {
+  from {
+    transform: rotate(180deg) translateX(var(--orbit-radius)) rotate(-180deg);
+  }
+  to {
+    transform: rotate(540deg) translateX(var(--orbit-radius)) rotate(-540deg);
+  }
+}
+
+@keyframes orbit-4 {
+  from {
+    transform: rotate(270deg) translateX(var(--orbit-radius)) rotate(-270deg);
+  }
+  to {
+    transform: rotate(630deg) translateX(var(--orbit-radius)) rotate(-630deg);
+  }
+}
+
+.animate-orbit-1 {
+  animation: orbit-1 25s infinite linear;
+}
+
+.animate-orbit-2 {
+  animation: orbit-2 25s infinite linear;
+}
+
+.animate-orbit-3 {
+  animation: orbit-3 25s infinite linear;
+}
+
+.animate-orbit-4 {
+  animation: orbit-4 25s infinite linear;
+}
+
+
 

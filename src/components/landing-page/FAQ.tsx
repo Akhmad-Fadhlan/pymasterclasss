@@ -51,41 +51,51 @@ export const FAQ: React.FC = () => {
         </div>
 
         {/* FAQs List */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-5">
           {faqs.map((faq, idx) => {
             const isOpen = activeIndex === idx;
             return (
               <Card
                 key={idx}
                 variant="glass"
-                className={`p-5 cursor-pointer border transition-all duration-300 ${
-                  isOpen ? "border-primary/20 shadow-md bg-white" : "border-white/50 hover:bg-white/45"
+                className={`p-6 cursor-pointer border transition-all duration-300 rounded-2xl ${
+                  isOpen
+                    ? "border-primary/30 border-l-4 border-l-primary bg-gradient-to-r from-blue-50/40 to-white/90 shadow-md shadow-primary/5"
+                    : "border-white/60 hover:bg-white/60"
                 }`}
                 onClick={() => toggleFAQ(idx)}
               >
                 {/* Header Row */}
                 <div className="flex justify-between items-center gap-4 text-left">
-                  <h3 className="text-sm sm:text-base font-bold text-[#0F172A]">
+                  <h3
+                    className={`text-sm sm:text-base font-bold transition-colors duration-200 ${
+                      isOpen ? "text-primary" : "text-[#0F172A]"
+                    }`}
+                  >
                     {faq.q}
                   </h3>
-                  <ChevronDown
-                    className={`w-5 h-5 text-slate-400 flex-shrink-0 transition-transform duration-300 ${
-                      isOpen ? "transform rotate-180 text-primary" : ""
+                  <div
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all duration-300 ${
+                      isOpen ? "bg-primary/10 text-primary" : "bg-slate-100 text-slate-400"
                     }`}
-                  />
+                  >
+                    <ChevronDown
+                      className={`w-4 h-4 transition-transform duration-300 ${
+                        isOpen ? "transform rotate-180" : ""
+                      }`}
+                    />
+                  </div>
                 </div>
 
                 {/* Answer Content */}
                 <div
-                  className={`grid transition-all duration-300 ease-in-out text-left ${
-                    isOpen ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 overflow-hidden"
+                  className={`transition-all duration-300 ease-in-out overflow-hidden text-left ${
+                    isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
                   }`}
                 >
-                  <div className="overflow-hidden">
-                    <p className="text-xs sm:text-sm font-semibold text-slate-500 leading-relaxed border-t border-slate-100 pt-3.5">
-                      {faq.a}
-                    </p>
-                  </div>
+                  <p className="text-xs sm:text-sm font-semibold text-slate-500 leading-relaxed border-t border-slate-100/60 pt-4">
+                    {faq.a}
+                  </p>
                 </div>
               </Card>
             );
