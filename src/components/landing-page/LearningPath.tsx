@@ -135,54 +135,139 @@ export const LearningPath: React.FC = () => {
           </div>
         </div>
 
-        {/* Tablet & Mobile Layout: Vertical Stepper */}
-        <div className="lg:hidden relative flex flex-col gap-8 text-left py-4">
-          {/* Vertical Connector line exactly centered behind the circles */}
-          <div className="absolute left-[15px] top-6 bottom-6 w-0.5 bg-slate-200 z-0" />
-          
-          {steps.map((step, idx) => (
-            <div key={idx} className="relative flex items-center pl-12 z-10">
-              {/* Stepper Node (Circle) */}
-              <div
-                className={`absolute left-0 w-8 h-8 rounded-full border-2 flex items-center justify-center font-bold text-xs z-10 transition-all duration-300 ${
-                  step.status === "completed"
-                    ? "bg-[#10B981] border-[#E8F8F3] text-white shadow-md shadow-[#10B981]/10"
-                    : step.status === "active"
-                    ? "bg-primary border-blue-50 text-white scale-110 shadow-md shadow-primary/10"
-                    : "bg-white border-slate-100 text-slate-400"
-                }`}
-              >
-                {step.status === "completed" ? (
-                  <Check className="w-4 h-4 stroke-[3]" />
-                ) : step.status === "active" ? (
-                  step.num
-                ) : (
-                  <Lock className="w-3.5 h-3.5" />
-                )}
-              </div>
-              
-              <div>
-                <h4
-                  className={`text-sm font-bold ${
-                    step.status === "active"
-                      ? "text-primary"
-                      : step.status === "completed"
-                      ? "text-[#0F172A]"
-                      : "text-slate-400"
+        {/* Tablet & Mobile Layout: Vertical Serpentine Stepper */}
+        <div className="lg:hidden relative grid grid-cols-2 gap-x-4 gap-y-24 py-12 px-2 max-w-md mx-auto">
+          {steps.map((step, idx) => {
+            // Serpentine mapping in 2 columns:
+            // Row 1: col 1, col 2
+            // Row 2: col 2, col 1
+            // Row 3: col 1, col 2
+            // Row 4: col 2, col 1
+            const mobileGridPositions = [
+              "col-start-1 row-start-1", // Step 1
+              "col-start-2 row-start-1", // Step 2
+              "col-start-2 row-start-2", // Step 3
+              "col-start-1 row-start-2", // Step 4
+              "col-start-1 row-start-3", // Step 5
+              "col-start-2 row-start-3", // Step 6
+              "col-start-2 row-start-4", // Step 7
+              "col-start-1 row-start-4", // Step 8
+            ];
+
+            // Render connector lines relative to each step node
+            let connectorLine = null;
+            if (idx === 0) {
+              // Row 1: step 1 -> step 2 (horizontal right)
+              connectorLine = (
+                <div className={`absolute left-1/2 top-6 w-full h-[3px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 1) {
+              // Right turn down: step 2 -> step 3 (vertical down)
+              connectorLine = (
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 2) {
+              // Row 2: step 3 -> step 4 (horizontal left)
+              connectorLine = (
+                <div className={`absolute right-1/2 top-6 w-full h-[3px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 3) {
+              // Left turn down: step 4 -> step 5 (vertical down)
+              connectorLine = (
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 4) {
+              // Row 3: step 5 -> step 6 (horizontal right)
+              connectorLine = (
+                <div className={`absolute left-1/2 top-6 w-full h-[3px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 5) {
+              // Right turn down: step 6 -> step 7 (vertical down)
+              connectorLine = (
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            } else if (idx === 6) {
+              // Row 4: step 7 -> step 8 (horizontal left)
+              connectorLine = (
+                <div className={`absolute right-1/2 top-6 w-full h-[3px] -z-10 ${
+                  step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
+                }`} />
+              );
+            }
+
+            return (
+              <div key={idx} className={`flex flex-col items-center text-center relative ${mobileGridPositions[idx]}`}>
+                {/* Connector line relative to this node */}
+                {connectorLine}
+
+                {/* Circle Stepper Node */}
+                <div
+                  className={`w-12 h-12 rounded-full border-2 flex items-center justify-center font-bold text-xs z-10 transition-all duration-300 relative ${
+                    step.status === "completed"
+                      ? "bg-[#10B981] border-[#E8F8F3] text-white shadow-md shadow-[#10B981]/15"
+                      : step.status === "active"
+                      ? "bg-primary border-blue-50 text-white scale-110 shadow-md shadow-primary/15"
+                      : "bg-white border-slate-100 text-slate-400"
                   }`}
                 >
-                  {step.title}
-                </h4>
-                <p className="text-xs font-semibold text-slate-400 mt-0.5">
-                  {step.status === "completed"
-                    ? "Selesai Dipelajari"
-                    : step.status === "active"
-                    ? "Materi Berjalan"
-                    : "Terkunci"}
-                </p>
+                  {step.status === "completed" ? (
+                    <Check className="w-4 h-4 stroke-[3]" />
+                  ) : step.status === "active" ? (
+                    step.num
+                  ) : (
+                    <Lock className="w-3.5 h-3.5" />
+                  )}
+
+                  {/* Step order badge for mobile */}
+                  <div className="absolute -top-1.5 -left-1.5 bg-slate-50 border border-slate-200/60 rounded-full w-5 h-5 flex items-center justify-center text-[8px] font-black text-slate-500 shadow-sm z-20">
+                    #{step.num}
+                  </div>
+                </div>
+                
+                {/* Step Metadata & Title */}
+                <div className="mt-3 flex flex-col items-center gap-1">
+                  <h4
+                    className={`text-xs font-extrabold ${
+                      step.status === "active"
+                        ? "text-primary"
+                        : step.status === "completed"
+                        ? "text-[#0F172A]"
+                        : "text-slate-400"
+                    }`}
+                  >
+                    {step.title}
+                  </h4>
+                  <span
+                    className={`text-[9px] font-bold px-2 py-0.5 rounded-full ${
+                      step.status === "completed"
+                        ? "bg-[#10B981]/10 text-[#10B981]"
+                        : step.status === "active"
+                        ? "bg-primary/10 text-primary animate-pulse"
+                        : "bg-slate-50 text-slate-400"
+                    }`}
+                  >
+                    {step.status === "completed"
+                      ? "Selesai"
+                      : step.status === "active"
+                      ? "Berjalan"
+                      : "Terkunci"}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
       </div>
