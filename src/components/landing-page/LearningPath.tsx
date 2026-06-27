@@ -159,49 +159,49 @@ export const LearningPath: React.FC = () => {
             if (idx === 0) {
               // Row 1: step 1 -> step 2 (horizontal right)
               connectorLine = (
-                <div className={`absolute left-1/2 top-6 w-full h-[3px] -z-10 ${
+                <div className={`absolute left-1/2 top-6 w-full h-[3px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 1) {
               // Right turn down: step 2 -> step 3 (vertical down)
               connectorLine = (
-                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 2) {
               // Row 2: step 3 -> step 4 (horizontal left)
               connectorLine = (
-                <div className={`absolute right-1/2 top-6 w-full h-[3px] -z-10 ${
+                <div className={`absolute right-1/2 top-6 w-full h-[3px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 3) {
               // Left turn down: step 4 -> step 5 (vertical down)
               connectorLine = (
-                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 4) {
               // Row 3: step 5 -> step 6 (horizontal right)
               connectorLine = (
-                <div className={`absolute left-1/2 top-6 w-full h-[3px] -z-10 ${
+                <div className={`absolute left-1/2 top-6 w-full h-[3px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 5) {
               // Right turn down: step 6 -> step 7 (vertical down)
               connectorLine = (
-                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] -z-10 ${
+                <div className={`absolute left-[calc(50%-1.5px)] top-6 w-[3px] h-[190px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
             } else if (idx === 6) {
               // Row 4: step 7 -> step 8 (horizontal left)
               connectorLine = (
-                <div className={`absolute right-1/2 top-6 w-full h-[3px] -z-10 ${
+                <div className={`absolute right-1/2 top-6 w-full h-[3px] z-0 ${
                   step.status === "completed" ? "bg-[#10B981]" : "bg-slate-200"
                 }`} />
               );
