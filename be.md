@@ -1,20 +1,56 @@
-# Backend Architecture
+# PyMasterClass Backend Architecture
 
-# PyMasterClass
+Version: 2.0
 
-Version 1.0
+---
 
-Backend Stack
+# Overview
 
-* PHP 8.3+
-* PDO
-* MySQL 8
-* Apache / Nginx
-* Composer
-* JWT Authentication
-* REST API
-* MVC + Service Layer
-* Repository Pattern
+Backend PyMasterClass dibangun menggunakan Next.js Fullstack sehingga Frontend dan Backend berada dalam satu repository.
+
+Backend menggunakan Clean Architecture, Repository Pattern, Service Layer, Prisma ORM, PostgreSQL (Supabase), serta Server Actions dan Route Handlers.
+
+Backend tidak menggunakan Express maupun NestJS.
+
+---
+
+# Technology Stack
+
+Framework
+
+- Next.js 15 (App Router)
+
+Language
+
+- TypeScript
+
+Database
+
+- PostgreSQL (Supabase)
+
+ORM
+
+- Prisma ORM
+
+Authentication
+
+- Supabase Auth
+
+Validation
+
+- Zod
+
+File Storage
+
+- Supabase Storage
+
+Deployment
+
+- Vercel
+
+Documentation
+
+- Markdown
 
 ---
 
@@ -22,225 +58,235 @@ Backend Stack
 
 ```
 Browser
-      │
-      ▼
-API Router
-      │
-      ▼
+
+↓
+
+React Component
+
+↓
+
+Server Action
+
+atau
+
+API Route
+
+↓
+
 Middleware
-      │
-      ▼
-Controller
-      │
-      ▼
-Service
-      │
-      ▼
-Repository
-      │
-      ▼
-PDO Database
+
+↓
+
+Validation (Zod)
+
+↓
+
+Service Layer
+
+↓
+
+Repository Layer
+
+↓
+
+Prisma ORM
+
+↓
+
+Supabase PostgreSQL
 ```
 
-Business Logic hanya boleh berada pada Service.
+---
 
-Controller tidak boleh mengakses Database secara langsung.
+# Architecture Rules
+
+Frontend tidak boleh mengakses database.
+
+Frontend tidak boleh memanggil Prisma.
+
+Semua query database melalui Repository.
+
+Semua Business Logic melalui Service.
+
+Semua validasi menggunakan Zod.
+
+Semua upload melalui Supabase Storage.
+
+Semua autentikasi menggunakan Supabase Auth.
+
+---
+
+# Layer
+
+Presentation
+
+↓
+
+Application
+
+↓
+
+Domain
+
+↓
+
+Infrastructure
 
 ---
 
 # Folder Structure
 
 ```
-backend/
+src/
 
 app/
 
-Controllers/
+api/
 
-AuthController.php
+(auth)
 
-CourseController.php
+dashboard/
 
-LessonController.php
+learning/
 
-MissionController.php
+pricing/
 
-QuizController.php
+admin/
 
-ProjectController.php
+components/
 
-ProfileController.php
+features/
 
-PaymentController.php
+hooks/
 
-CertificateController.php
+lib/
 
-DashboardController.php
+repositories/
 
-AdminController.php
+services/
 
-AnalyticsController.php
+validators/
 
-Services/
+types/
 
-AuthService.php
+middleware.ts
 
-CourseService.php
+prisma/
 
-LessonService.php
+public/
+```
 
-MissionService.php
+---
 
-QuizService.php
+# Repository Pattern
 
-ProjectService.php
+Repository bertugas mengakses database.
 
-PaymentService.php
+Repository tidak memiliki Business Logic.
 
-CertificateService.php
+Contoh
 
-DashboardService.php
+```
+UserRepository
 
-AIService.php
+CourseRepository
 
-Repositories/
+MissionRepository
 
-UserRepository.php
+LessonRepository
 
-CourseRepository.php
+QuizRepository
 
-MissionRepository.php
+ProjectRepository
 
-LessonRepository.php
+ProgressRepository
 
-QuizRepository.php
+PaymentRepository
 
-ProjectRepository.php
+CertificateRepository
 
-PaymentRepository.php
+NotificationRepository
+```
 
-CertificateRepository.php
+---
 
-AnalyticsRepository.php
+# Service Layer
 
-Models/
+Service berisi seluruh Business Logic.
 
-User.php
+Contoh
 
-Course.php
+```
+AuthService
 
-Mission.php
+DashboardService
 
-Lesson.php
+CourseService
 
-Quiz.php
+MissionService
 
-Project.php
+LessonService
 
-Payment.php
+QuizService
 
-Certificate.php
+ProgressService
 
-Core/
+ProjectService
 
-App.php
+PaymentService
 
-Router.php
+CertificateService
 
-Controller.php
+NotificationService
+```
 
-Database.php
+---
 
-Request.php
+# Validation
 
-Response.php
+Semua request divalidasi menggunakan Zod.
 
-Session.php
+Contoh
 
-Validator.php
+```
+Register
 
-Middleware.php
+Login
 
-JWT.php
+Create Course
 
-Config/
+Update Lesson
 
-config.php
+Quiz Submission
 
-database.php
-
-jwt.php
-
-mail.php
-
-Storage/
-
-Uploads/
-
-Certificates/
-
-Projects/
-
-Slides/
-
-Avatar/
-
-Logs/
-
-Public/
-
-index.php
-
-Assets/
-
-Routes/
-
-api.php
-
-web.php
-
-Middleware/
-
-AuthMiddleware.php
-
-AdminMiddleware.php
-
-PremiumMiddleware.php
-
-RateLimitMiddleware.php
-
-CSRFMiddleware.php
-
-Vendor/
-
-composer
-
-.env
+Project Upload
 ```
 
 ---
 
 # Authentication
 
-JWT Token
+Provider
 
-Access Token
+Supabase Auth
 
-Refresh Token
+Method
 
-Remember Login
+- Email Password
 
-Email Verification
+Future
 
-Forgot Password
+- Google
 
-Reset Password
+- GitHub
 
-Google Login (Future)
+- Microsoft
 
 ---
 
-# User Role
+# Authorization
+
+Role
 
 Guest
 
@@ -252,199 +298,172 @@ Admin
 
 Super Admin
 
-Role menggunakan Middleware.
+---
+
+# Permission Matrix
+
+Guest
+
+- Landing Page
+- Login
+- Register
+
+Student
+
+- Dashboard
+- Learning
+- Quiz
+- Certificate
+
+Instructor
+
+- Course
+- Mission
+- Lesson
+
+Admin
+
+- Semua CRUD
+
+Super Admin
+
+- Semua fitur termasuk System Settings
 
 ---
 
-# REST API Structure
+# Middleware
 
-```
-POST
+Guest Middleware
 
-/api/auth/login
+↓
 
-POST
+Auth Middleware
 
-/api/auth/register
+↓
 
-POST
+Verified Middleware
 
-/api/auth/logout
+↓
 
-POST
+Role Middleware
 
-/api/auth/refresh
+↓
 
-GET
-
-/api/profile
-
-PUT
-
-/api/profile
-
-GET
-
-/api/dashboard
-
-GET
-
-/api/courses
-
-GET
-
-/api/course/{slug}
-
-GET
-
-/api/mission/{id}
-
-GET
-
-/api/lesson/{id}
-
-POST
-
-/api/quiz/submit
-
-POST
-
-/api/project/upload
-
-GET
-
-/api/certificate
-
-POST
-
-/api/payment
-
-GET
-
-/api/analytics
-```
-
-Semua API menggunakan JSON.
+Permission Middleware
 
 ---
 
-# Response Standard
+# Feature Modules
 
-Success
+Authentication
 
-```
-{
-    "success": true,
-    "message": "...",
-    "data": {}
-}
-```
+Dashboard
 
-Error
+Course
 
-```
-{
-    "success": false,
-    "message": "...",
-    "errors": []
-}
-```
+Category
 
----
+Mission
 
-# Database Connection
+Lesson
 
-PDO Singleton
+Slide
 
-Persistent Connection
+Practice
 
-UTF8MB4
+Quiz
 
-Prepared Statement
+Question
 
-Transaction
+Answer
 
-Rollback
+Project
 
-Commit
-
----
-
-# Security
-
-PDO Prepared Statement
-
-CSRF Token
-
-XSS Filter
-
-Input Validation
-
-Password Hash
-
-JWT
-
-Rate Limiter
-
-Session Regeneration
-
-File Upload Validation
-
-MIME Validation
-
-Image Compression
-
-Captcha
-
-Email Verification
-
-Login Attempt Limit
-
-CORS
-
-Secure Headers
-
-HTTPS Only
-
----
-
-# Cache
-
-Course Cache
-
-Lesson Cache
-
-Dashboard Cache
-
-Statistics Cache
-
-Session Cache
-
----
-
-# Upload System
-
-Avatar
-
-Slide Thumbnail
-
-Project Thumbnail
+Submission
 
 Certificate
 
-PDF
+Progress
 
-Image
+Notification
 
-Video (Optional)
+Payment
 
-Semua file diberi nama UUID.
+Analytics
+
+Profile
+
+Settings
+
+Admin
+
+AI Mentor
+
+---
+
+# API Strategy
+
+Menggunakan kombinasi
+
+Server Actions
+
+dan
+
+Route Handlers
+
+Rule
+
+GET
+
+Route Handler
+
+POST
+
+Server Action
+
+Upload
+
+Route Handler
+
+Webhook
+
+Route Handler
+
+---
+
+# Error Handling
+
+Semua Error menggunakan standar berikut
+
+```
+{
+success:false,
+message:"",
+errors:[]
+}
+```
+
+---
+
+# Success Response
+
+```
+{
+success:true,
+message:"",
+data:{}
+}
+```
 
 ---
 
 # Logging
 
+Semua aktivitas dicatat
+
 Login
+
+Logout
 
 Register
 
@@ -452,143 +471,159 @@ Payment
 
 Certificate
 
-Admin Activity
+Project Upload
 
-API Error
+Admin Activity
 
 System Error
 
-Database Error
+---
 
-Audit Trail
+# Upload
+
+Storage
+
+Supabase Storage
+
+Bucket
+
+avatars
+
+course-thumbnail
+
+lesson-thumbnail
+
+project
+
+certificate
+
+public-assets
+
+---
+
+# Upload Rules
+
+Max Image
+
+5 MB
+
+Format
+
+jpg
+
+jpeg
+
+png
+
+webp
+
+PDF
+
+20 MB
+
+Generate UUID Filename
+
+Compress Image
+
+---
+
+# Security
+
+Supabase Auth
+
+JWT
+
+Secure Cookie
+
+CSRF
+
+Rate Limiter
+
+Helmet Header
+
+Zod Validation
+
+RLS
+
+Input Sanitization
+
+SQL Injection Protection
+
+XSS Protection
+
+---
+
+# Password Policy
+
+Minimal
+
+8 karakter
+
+Harus mengandung
+
+Huruf Besar
+
+Huruf Kecil
+
+Angka
+
+Symbol
+
+---
+
+# Session
+
+Managed by Supabase Auth
+
+Auto Refresh
+
+Persistent Login
+
+Remember Me
+
+Logout All Device (Future)
+
+---
+
+# Database Access
+
+Semua query menggunakan Prisma.
+
+Dilarang menggunakan SQL mentah kecuali benar-benar diperlukan.
+
+---
+
+# Caching
+
+Dashboard
+
+Course List
+
+Landing Page
+
+Category
+
+Announcement
+
+Statistics
 
 ---
 
 # Notification
 
-Email
-
 Dashboard Notification
 
-System Announcement
+Email
 
-Course Update
+Achievement
 
-Payment Success
+Mission Complete
 
 Certificate Ready
 
----
-
-# Learning Progress
-
-Progress dihitung otomatis.
-
-Formula
-
-```
-Slide
-
-20%
-
-Practice
-
-20%
-
-Quiz
-
-20%
-
-Challenge
-
-20%
-
-Mini Project
-
-20%
-```
-
-Jika Progress 100%
-
-Mission Unlock
-
----
-
-# Payment Module
-
-Checkout
-
-Coupon
-
-Voucher
-
-Invoice
-
-Payment Verification
-
-Order History
-
-Refund (Future)
-
----
-
-# AI Module
-
-AI Prompt
-
-AI Tutor
-
-AI Hint
-
-AI Quiz Generator
-
-AI Code Review (Future)
-
-Semua Prompt tersimpan di Database.
-
----
-
-# Certificate Engine
-
-Generate PDF
-
-QR Verification
-
-Unique Certificate Number
-
-Download
-
-Share
-
----
-
-# Admin Module
-
-Dashboard
-
-User
-
-Course
-
-Mission
-
-Lesson
-
-Quiz
-
-Project
-
-Certificate
-
-Analytics
-
-Revenue
+Payment Success
 
 Announcement
-
-Prompt AI
-
-Settings
 
 ---
 
@@ -596,7 +631,7 @@ Settings
 
 Student Active
 
-Course Popularity
+Course Completion
 
 Mission Completion
 
@@ -604,101 +639,165 @@ Quiz Score
 
 Revenue
 
+Top Course
+
+Daily Visitor
+
 Retention
-
-Traffic
-
-Conversion
-
----
-
-# Database Naming Convention
-
-tbl_users
-
-tbl_courses
-
-tbl_missions
-
-tbl_lessons
-
-tbl_slides
-
-tbl_quizzes
-
-tbl_questions
-
-tbl_projects
-
-tbl_progress
-
-tbl_certificates
-
-tbl_payments
-
-tbl_transactions
-
-tbl_notifications
-
-tbl_logs
-
-tbl_settings
-
----
-
-# API Version
-
-```
-/api/v1/
-/api/v2/
-```
 
 ---
 
 # Performance
 
-Database Index
+Server Component
 
-Pagination
+Streaming
 
 Lazy Loading
 
+Code Splitting
+
+Pagination
+
+Infinite Scroll
+
 Caching
 
-Compression
+ISR
 
-Image Optimization
+---
 
-Minified JSON
+# Background Jobs (Future)
 
-Gzip
+Email Queue
+
+Certificate Generator
+
+Reminder Learning
+
+Payment Verification
+
+AI Processing
+
+---
+
+# AI Module
+
+AI Mentor
+
+AI Hint
+
+AI Practice
+
+AI Quiz Generator
+
+AI Feedback
+
+AI Recommendation
+
+---
+
+# Environment Variables
+
+```
+DATABASE_URL=
+
+DIRECT_URL=
+
+NEXT_PUBLIC_SUPABASE_URL=
+
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+
+SUPABASE_SERVICE_ROLE_KEY=
+
+NEXTAUTH_SECRET=
+
+NEXT_PUBLIC_APP_URL=
+```
 
 ---
 
 # Coding Standard
 
-PSR-12
+TypeScript Strict
 
-CamelCase Method
+ESLint
 
-PascalCase Class
-
-snake_case Database
-
-UUID Primary Key
-
-Strict Type
-
-Dependency Injection
+Prettier
 
 Repository Pattern
 
-Service Layer
+Service Pattern
 
-Single Responsibility Principle
+SOLID
 
 DRY
 
 KISS
 
-SOLID
+Reusable
+
+Feature Based Folder
+
+---
+
+# Future Scalability
+
+Redis Cache
+
+Queue Worker
+
+Realtime Notification
+
+Forum Discussion
+
+Affiliate
+
+Subscription
+
+Organization
+
+Mobile API
+
+GraphQL
+
+Microservice
+
+Docker
+
+CI/CD
+
+Multi Region
+
+---
+
+# Deployment
+
+GitHub
+
+↓
+
+Vercel
+
+↓
+
+Supabase
+
+↓
+
+Custom Domain
+
+---
+
+# Backend Development Rules
+
+- Tidak boleh query Prisma di React Component.
+- Tidak boleh Business Logic di API Route.
+- Semua query melalui Repository.
+- Semua Business Logic melalui Service.
+- Semua validasi menggunakan Zod.
+- Semua upload menggunakan Supabase Storage.
+- Semua endpoint memiliki validasi dan permission.
+- Semua response menggunakan format standar.
+- Semua fitur mengikuti PRD dan User Flow.
+- Semua perubahan database melalui Prisma Migration.
